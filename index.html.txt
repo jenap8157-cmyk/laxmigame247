@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Free Game Website</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>🎮 My Free Game Website</h1>
+<p>Play games for fun!</p>
+
+<button onclick="play()">Play Game</button>
+<p id="result"></p>
+
+<script src="script.js"></script>
+</body>
+</html>
+
+body {
+  background: #222;
+  color: white;
+  text-align: center;
+  font-family: Arial;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 18px;
+}
+
+function play() {
+  let score = Math.floor(Math.random() * 100);
+  document.getElementById("result").innerText =
+    "Your score: " + score;
+}
