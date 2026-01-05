@@ -1,35 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>My Free Game Website</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crash Game</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="game-container">
+        <h1>Crash Game</h1>
+        <div id="game-board">
+            <div id="multiplier">1.00x</div>
+            <div id="progress-bar"></div>
+        </div>
+        <div class="controls">
+            <input type="number" id="bet-input" placeholder="Enter your bet" />
+            <button id="start-button">Start Game</button>
+            <button id="cashout-button" disabled>Cash Out</button>
+        </div>
+        <div id="status-message"></div>
+    </div>
 
-<h1>🎮 My Free Game Website</h1>
-<p>Play games for fun!</p>
-
-<button onclick="play()">Play Game</button>
-<p id="result"></p>
-
-<script src="script.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
-
-body {
-  background: #222;
-  color: white;
-  text-align: center;
-  font-family: Arial;
-}
-
-button {
-  padding: 10px 20px;
-  font-size: 18px;
-}
-
-function play() {
-  let score = Math.floor(Math.random() * 100);
-  document.getElementById("result").innerText =
-    "Your score: " + score;
-}

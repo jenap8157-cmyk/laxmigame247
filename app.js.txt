@@ -1,0 +1,87 @@
+// app.js
+
+let currentMultiplier = 1;
+let gameInterval;
+let gameStarted = false;
+let betAmount = 0;
+let cashoutDisabled = false;
+
+const betInput = document.getElementById('bet-input');
+const startButton = document.getElementById('start-button');
+const cashoutButton = document.getElementById('cashout-button');
+const multiplierDisplay = document.getElementById('multiplier');
+const progressBar = document.getElementById('progress-bar');
+const statusMessage = document.getElementById('status-message');
+
+startButton.addEventListener('click', startGame);
+cashoutButton.addEventListener('click', cashOut);
+
+function startGame() {
+    // Get the bet amount
+    betAmount = parseFloat(betInput.value);
+    if (isNaN(betAmount) || betAmount <= 0) {
+        statusMessage.textContent = "Please enter a valid bet amount.";
+        return;
+    }
+
+    // Disable start button and enable cashout button
+    startButton.disabled = true;
+    cashoutButton.disabled = false;
+    statusMessage.textContent = "Game Started! Waiting for multiplier to increase...";
+
+    // Initialize multiplier and progress bar
+    currentMultiplier = 1;
+    multiplierDisplay.textContent = `${currentMultiplier.toFixed(2)}x`;
+    progressBar.style.width = '0%';
+
+    // Start the game with increasing multiplier
+    gameStarted = true;
+    gameInterval = setInterval(updateMultiplier, 100);
+
+    // Disable the cashout button after a certain time (to simulate crash)
+    setTimeout(() => {
+        cashoutButton.disabled = true;
+        if (gameStarted) {
+            crashGame();
+        }
+    }, Math.random() * 5000 + 5000); // Random crash time between 5 to 10 seconds
+}
+
+function updateMultiplier() {
+    if (!gameStarted) return;
+
+    currentMultiplier += 0.01; // Increase multiplier by 0.01 every 100ms
+    multiplierDisplay.textContent = `${currentMultiplier.toFixed(2)}x`;
+
+    // Update the progress bar width
+    const progressWidth = (currentMultiplier - 1) * 20;
+    progressBar.style.width = `${progressWidth}%`;
+
+    // Randomly decide if the game should crash
+    if (Math.random() < 0.01) { // 1% chance to crash the game each update
+        crashGame();
+    }
+}
+
+function crashGame() {
+    if (gameStarted) {
+        gameStarted = false;
+        clearInterval(gameInterval);
+        statusMessage.textContent = "Game Crashed! You lost your bet.";
+        cashoutButton.disabled = true;
+    }
+}
+
+function cashOut() {
+    if (!gameStarted) return;
+
+    // Calculate earnings if the user cashed out
+    const earnings = betAmount * currentMultiplier;
+    statusMessage.textContent = `You cashed out at ${currentMultiplier.toFixed(2)}x! You won ${earnings.toFixed(2)}!`;
+
+    // Stop the game
+    gameStarted = false;
+    clearInterval(gameInterval);
+    startButton.disabled = false;
+    cashoutButton.disabled = true;
+}
